@@ -14,7 +14,7 @@ TEST_CASE("Player test")
     CHECK(two.cardesTaken() == 0);
     Game g(one, two);
     g.playTurn();
-    bool isStackSizeChanged = (2 <= one.stacksize() - two.stacksize()) || (2 <= two.stacksize() - one.stacksize());
+    bool isStackSizeChanged = (one.stacksize() < 26) && (two.stacksize() < 26);
     CHECK(isStackSizeChanged);
     bool isCardsTaken = (2 <= one.cardesTaken()) || (2 <= two.cardesTaken());
     CHECK(isCardsTaken);
@@ -24,16 +24,23 @@ TEST_CASE("Player test")
 
 TEST_CASE("Game test")
 {
+    Player s("samePlayer");
+    CHECK_THROWS(Game(s, s));
     Player one("one");
     Player two("two");
     Game g(one, two);
+    CHECK_THROWS(Game(one, one));
     CHECK_THROWS(g.printLastTurn());
     CHECK_THROWS(g.printLog());
-    g.playAll();
+    CHECK_NOTHROW(g.playAll());
     bool isStacksEmpty = (one.stacksize() == 0) && (two.stacksize() == 0);
     CHECK(isStacksEmpty);
     bool allCardsTaken = one.cardesTaken() + two.cardesTaken() == 52;
     CHECK(allCardsTaken);
     CHECK_THROWS(g.playTurn());
     CHECK_THROWS(g.playAll());
+
+    // players one and two already finished the game
+    CHECK_NOTHROW(Game(one, Player("three")));
+    CHECK_NOTHROW(Game(Player("four"), two));
 }
