@@ -5,7 +5,6 @@
 class Player
 {
     std::string name;
-    Card stack[26];
 
 public:
     int stacksize();
