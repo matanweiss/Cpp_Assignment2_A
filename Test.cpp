@@ -29,7 +29,7 @@ TEST_CASE("Game test")
     Player one("one");
     Player two("two");
     Game g(one, two);
-    CHECK_THROWS(Game(one, one));
+    CHECK_THROWS(Game(one, two));
     CHECK_THROWS(g.printLastTurn());
     CHECK_THROWS(g.printLog());
     CHECK_NOTHROW(g.playAll());
